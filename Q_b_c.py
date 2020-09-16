@@ -26,12 +26,13 @@ c = np.loadtxt('c.txt')
 n=Q.shape[0]
 
 # function for f(x), returns a number
+# x: a n*1 2d array
 def f(x):
     result = np.matmul(np.matmul(x.T, Q), x) + np.matmul(b.T, x) + c
     return result[0, 0]
 
 # re-define f(x) for scipy.optimize because result is a 1d array somehow
-def f(x):
+def f1(x):
     result = np.matmul(np.matmul(x.T, Q), x) + np.matmul(b.T, x) + c
     return result[0]
 
@@ -82,6 +83,6 @@ print('Part 2:')
 print('x*:', x_star2, ', f(x*):', f_x_star2)
 
 # part 3
-result = minimize(f, x_guess, method='nelder-mead', options={'xatol': 1e-8, 'disp': True})
+result = minimize(f1, x_guess, method='nelder-mead', options={'xatol': 1e-8, 'disp': True})
 print('Part 3:')
-print('x*:', result.x, ', f(x*):', f(result.x))
+print('x*:', result.x, ', f(x*):', f1(result.x))
