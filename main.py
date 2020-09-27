@@ -59,7 +59,9 @@ while norm_g > Error:
         print("LHS=", new_x)
         K = K + 1
 
-        x = x + Alpha * d
+    x = x + Alpha * d
+    g = grad(new_x)
+    norm_g = LA.norm(g)
 
 
     print("Final K=",K)
