@@ -60,7 +60,7 @@ while norm_g > Error:
         K = K + 1
 
     x = x + Alpha * d
-    g = grad(new_x)
+    g = grad(function)(x)
     norm_g = LA.norm(g)
 
 
