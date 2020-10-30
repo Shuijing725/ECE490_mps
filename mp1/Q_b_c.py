@@ -2,20 +2,22 @@ import numpy as np
 from scipy.optimize import minimize
 
 # Choose n, then generate random values for Q (positive definite),b, and c
-# n=5
-# Q=np.random.random((n,n))
-# Q=Q.dot(Q.T)+0.1*np.identity(n)
-# b=np.random.random(n)
-# c=np.random.random(1)
+n=20
+Q=np.random.random((n,n))
+Q=Q.dot(Q.T)+0.1*np.identity(n)
+b=np.random.random(n)
+
+c=np.random.random(1)
+c = np.array([[c]])
 # np.savetxt('Q.txt', Q)
 # np.savetxt('b.txt', b)
 # np.savetxt('c.txt', c)
 
 # load from txt
-Q = np.loadtxt('Q.txt')
-b = np.loadtxt('b.txt')
+# Q = np.loadtxt('Q.txt')
+# b = np.loadtxt('b.txt')
 b = np.array([b]).T
-c = np.loadtxt('c.txt')
+# c = np.loadtxt('c.txt')
 
 # hw2 problem
 # Q = np.array([[3, 0], [0, 4]])
@@ -23,7 +25,7 @@ c = np.loadtxt('c.txt')
 # c = np.array([[0]])
 
 # find n automatically
-n=Q.shape[0]
+# n=Q.shape[0]
 
 # function for f(x), returns a number
 # x: a n*1 2d array
@@ -69,9 +71,10 @@ def gradient_descent(x, epsilon, alpha0, sigma, beta):
 
 # part 1
 # initial guess
-x_guess = np.array([[0.], [0.], [0.], [0.], [0.]])
+# x_guess = np.array([[0.], [0.], [0.], [0.], [0.]])
+x_guess = np.zeros((n, 1))
 # x_guess = np.array([[1.], [0.]])
-x_star1, f_x_star1, iter_num = gradient_descent(x_guess, epsilon=0.00001, alpha0=1, sigma=0.001, beta=0.2)
+x_star1, f_x_star1, iter_num = gradient_descent(x_guess, epsilon=0.00001, alpha0=0.1, sigma=0.001, beta=0.2)
 print('Part 1:')
 print('x*:', x_star1, ', f(x*):', f_x_star1, 'number of iterations:', iter_num)
 
