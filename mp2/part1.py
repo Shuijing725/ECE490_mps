@@ -11,7 +11,7 @@ def f(w, x):
 
 # function for df(x)/dx, returns an n*1 vector
 def grad_f(w, x):
-    df = np.array([0, 0, 0])
+    df = np.array([0., 0., 0.])
     for i in range(3):
         df[i] = 2/(1-x[0]-x[1]-x[2])**3 - w[i]/x[i]
     return df
@@ -28,6 +28,7 @@ def armijo(w, x, alpha0, sigma, beta):
     while not stop:
         lhs = f(w, x + alpha * dk)
         rhs = fx + alpha * sigma_grad_f_dk
+
         if lhs <= rhs:
             stop = True
         else:
@@ -37,6 +38,7 @@ def armijo(w, x, alpha0, sigma, beta):
 def gradient_descent(w, x, epsilon, alpha0, sigma, beta):
     i = 0
     while abs(np.linalg.norm(grad_f(w, x))) >= epsilon:
+        # print('stop cond:', abs(np.linalg.norm(grad_f(w, x))), epsilon)
         alpha = armijo(w, x, alpha0, sigma, beta)
         x = x - alpha * grad_f(w, x)
         i = i + 1
@@ -50,7 +52,7 @@ def part1():
     part_num = ['a', 'b', 'c']
     for i in range(3):
         # armijo's rule
-        x_star1, f_x_star1, iter_num = gradient_descent(w_list[i], x0_list[i], epsilon=0.0000001, alpha0=0.0001, sigma=0.001, beta=0.2)
+        x_star1, f_x_star1, iter_num = gradient_descent(w_list[i], x0_list[i], epsilon=0.00001, alpha0=0.001, sigma=0.1, beta=0.1)
         print('Part', part_num[i], ':')
         print('Armijo rule:')
         print('x*:', x_star1, ', f(x*):', f_x_star1, 'number of iterations:', iter_num)

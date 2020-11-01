@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import minimize
+from scipy import optimize
 
 # function for f(x), returns a number
 # x: a list with length 3
@@ -10,7 +11,7 @@ def f(w, x):
 
 # function for df(x)/dx, returns an n*1 vector
 def grad_f(w, x):
-    df = np.array([0, 0, 0])
+    df = np.array([0., 0., 0.])
     term1 = 2/(1-x[0]-x[1])**3
     term2 = 2/(1-x[0]-x[2])**3
     # dg/dx1, dg/dx2, dg/dx3
@@ -48,26 +49,28 @@ def gradient_descent(w, x, epsilon, alpha0, sigma, beta):
 
 
 def part1():
-    w_list = [[1, 1, 1], [1, 2, 3], [2, 2, 2]]
+    w_list = [[1., 1., 1.], [1., 2., 3.], [2., 2., 2.]]
     x0_list = [[0.25, 0.25, 0.25], [0.25, 0.25, 0.25],[0.25, 0.25, 0.25]]
     part_num = ['a', 'b', 'c']
     for i in range(3):
         # armijo's rule
-        x_star1, f_x_star1, iter_num = gradient_descent(w_list[i], x0_list[i], epsilon=0.00001, alpha0=0.001, sigma=0.001, beta=0.2)
+        x_star1, f_x_star1, iter_num = gradient_descent(w_list[i], x0_list[i], epsilon=0.00001, alpha0=0.001, sigma=0.1, beta=0.1)
         print('Part', part_num[i], ':')
         print('Armijo rule:')
         print('x*:', x_star1, ', f(x*):', f_x_star1, 'number of iterations:', iter_num)
 
         def f1(x):
-            result = 1 / (1 - x[0] - x[1] - x[2]) ** 2 - (
+            result = 1/(1-x[0]-x[1])**2 + 1/(1-x[0]-x[2])**2 - (
                         w_list[i][0] * np.log(x[0]) + w_list[i][1] * np.log(x[1]) + w_list[i][2] * np.log(x[2]))
             return result
         cons = ({'type': 'ineq',
                  'fun': lambda x: np.array([-x[0]-x[1]-x[2]+1])})
+        # cons = optimize.LinearConstraint([[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0],[1, 0, 1]], [0, 0, 0, -np.inf, -np.inf], [np.inf, np.inf, np.inf, 1, 1])
         # scipy.optimize
         # print('91')
         # result = minimize(f1, np.array(x0_list[i]), method='nelder-mead', options={'xtol': 1e-8, 'disp': True})
-        result = minimize(f1, np.array(x0_list[i]), constraints=cons, options={'disp': True})
+        result = minimize(f1, np.array(x0_list[i]), constraints=cons, tol = 0.00001)
+
         print('scipy.optimize:')
         print('x*:', result.x, ', f(x*):', f1(result.x))
 
