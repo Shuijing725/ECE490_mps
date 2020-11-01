@@ -50,7 +50,7 @@ def part1():
     part_num = ['a', 'b', 'c']
     for i in range(3):
         # armijo's rule
-        x_star1, f_x_star1, iter_num = gradient_descent(w_list[i], x0_list[i], epsilon=0.00001, alpha0=0.0001, sigma=0.001, beta=0.2)
+        x_star1, f_x_star1, iter_num = gradient_descent(w_list[i], x0_list[i], epsilon=0.0000001, alpha0=0.0001, sigma=0.001, beta=0.2)
         print('Part', part_num[i], ':')
         print('Armijo rule:')
         print('x*:', x_star1, ', f(x*):', f_x_star1, 'number of iterations:', iter_num)
@@ -63,9 +63,10 @@ def part1():
         cons = ({'type': 'ineq',
                  'fun': lambda x: np.array([-x[0]-x[1]-x[2]+1])})
 
-        result = minimize(f1, np.array(x0_list[i]), method='nelder-mead', options={'xtol': 1e-8, 'disp': True})
+        # result = minimize(f1, np.array(x0_list[i]), method='nelder-mead', options={'xtol': 1e-8, 'disp': True})
+        result = minimize(f1, np.array(x0_list[i]), constraints=cons, options={'disp': True})
         print('scipy.optimize:')
-        print('x*:', result.x, ', f(x*):', f1(result.x))
+        print('x*:', result.x, ', f(x*):', f1(result.x)) #, 'x1+x2+x3:', np.sum(result.x))
 
 # main function
 part1()

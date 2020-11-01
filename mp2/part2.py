@@ -66,7 +66,8 @@ def part1():
                  'fun': lambda x: np.array([-x[0]-x[1]-x[2]+1])})
         # scipy.optimize
         # print('91')
-        result = minimize(f1, np.array(x0_list[i]), method='nelder-mead', options={'xtol': 1e-8, 'disp': True})
+        # result = minimize(f1, np.array(x0_list[i]), method='nelder-mead', options={'xtol': 1e-8, 'disp': True})
+        result = minimize(f1, np.array(x0_list[i]), constraints=cons, options={'disp': True})
         print('scipy.optimize:')
         print('x*:', result.x, ', f(x*):', f1(result.x))
 
