@@ -8,7 +8,7 @@ It generates the random Q,A and b, then store them in file Q.txt A.txt and b.txt
 # Run agumented mulitiplier optimizer
 run command:
 
-    python main.py [Qfilename] [Afilename] [bfilename] [alpha0] [beta] [sigma] [epsilon] [c_k change method]
+    python main.py [Qfilename] [Afilename] [bfilename] [alpha0] [beta] [sigma] [epsilon]
 
 The c_k vs relative error will be shown in a plt console, close the image console to continue.
 

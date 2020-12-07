@@ -10,7 +10,7 @@ alpha0=float(sys.argv[4])
 beta=float(sys.argv[5])
 sigma=float(sys.argv[6])
 epsilon=float(sys.argv[7])
-method=sys.argv[8]
+# method=sys.argv[8]
 
 
 
@@ -74,18 +74,33 @@ def method_of_multiplier(epsilon, x, c_k,method,lambda_k):
     if(np.linalg.norm(x) !=0):
         for vec in x_result:
             x_error.append( np.linalg.norm(vec-x)/np.linalg.norm(x) )
-    plt.plot(c_k_result,x_error)
-    plt.ylabel('relative error')
-    plt.xlabel('c_k')
-    plt.show()
-    return x,i
+
+    return x,i,x_error
 
 x0 = np.zeros((Q.shape[0],1))
 lambda0 = np.zeros((A.shape[0],1))
 
-x, num_iter = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method=method,lambda_k=lambda0)
-print('solution x:', x.flatten(), '\n, number of iterations:', num_iter)
+# x, num_iter,x_error = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method="const",lambda_k=lambda0)
+# print('Method 1: solution x:', x.flatten(), '\n, number of iterations:', num_iter)
+# plt.plot(x_error,'go', label='method 1',markersize=5)
 
+x, num_iter,x_error = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method="add",lambda_k=lambda0)
+print('Method 2: solution x:', x.flatten(), '\n, number of iterations:', num_iter)
+plt.plot(x_error,'rx', label='add',markersize=5)
+
+x, num_iter,x_error = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method="multiply",lambda_k=lambda0)
+print('Method 3: solution x:', x.flatten(), '\n, number of iterations:', num_iter)
+plt.plot(x_error,'b*', label='multiply',markersize=5)
+
+# x, num_iter,x_error = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method="m4",lambda_k=lambda0)
+# print('Method 4: solution x:', x.flatten(), '\n, number of iterations:', num_iter)
+# plt.plot(x_error,'y1', label='method 3',markersize=5)
+
+
+plt.legend()
+plt.ylabel('relative error')
+plt.xlabel('iteration number')
+plt.show()
 linear_constraint = LinearConstraint(A, b.flatten(), b.flatten())
 
     
