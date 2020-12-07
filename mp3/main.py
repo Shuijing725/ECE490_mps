@@ -92,9 +92,9 @@ x, num_iter,x_error = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method="
 print('Method 3: solution x:', x.flatten(), '\n, number of iterations:', num_iter)
 plt.plot(x_error,'b*', label='multiply',markersize=5)
 
-# x, num_iter,x_error = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method="m4",lambda_k=lambda0)
-# print('Method 4: solution x:', x.flatten(), '\n, number of iterations:', num_iter)
-# plt.plot(x_error,'y1', label='method 3',markersize=5)
+x, num_iter,x_error = method_of_multiplier(epsilon=0.00001, x=x0, c_k=1,method="multiply_with_cond",lambda_k=lambda0)
+print('Method 4: solution x:', x.flatten(), '\n, number of iterations:', num_iter)
+plt.plot(x_error,'y1', label='multiply_with_cond',markersize=5)
 
 
 plt.legend()
