@@ -36,7 +36,7 @@ minimizer = GD_Armijo(Q, A, b, epsilon, alpha0, sigma, beta)
 # given ck, calculate c(k+1)
 # method: whether we are using method 1, 2, 3, 4 in Hint
 # 1: const, 2: add, 3: multiply, 4: multiply_with_condition
-def update_c(c, method='multiply', hx=None, last_hx=None):
+def update_c(c, method='multiply', hx_norm=None, last_hx_norm=None):
     if method == 'const':
         newc = c
     elif method == 'add':
@@ -44,9 +44,9 @@ def update_c(c, method='multiply', hx=None, last_hx=None):
     elif method == 'multiply':
         newc = c * 1.1
     else:
-        if not hx or not last_hx:
+        if not hx_norm or not last_hx_norm:
             raise ValueError('For method 4, need h(xk) and h(x(k-1))!')
-        if np.linalg.norm(hx) > 0.9 * np.linalg.norm(last_hx):
+        if hx_norm > 0.9 * last_hx_norm:
             newc = c * 1.1
         else:
             newc = c
@@ -58,9 +58,14 @@ def method_of_multiplier(epsilon, x, c_k,method,lambda_k):
     x_result=[]
     c_k_result=[]
     while minimizer.norm_h(x) >= epsilon:
+        # print(i)
+        last_x = x
         x, _, _ = minimizer.gradient_descent(x, lambda_k, c_k)
         lambda_k = lambda_k + c_k * minimizer.h(x)
-        c_k = update_c(c_k,method=method)
+        if method == 'multiply_with_cond':
+            c_k = update_c(c_k, method=method, hx_norm=minimizer.norm_h(x), last_hx_norm=minimizer.norm_h(last_x))
+        else:
+            c_k = update_c(c_k,method=method)
         x_result.append(x)
         c_k_result.append(c_k)
         i = i + 1
@@ -94,6 +99,3 @@ res = optimize.minimize(rosen, x0.flatten(),Q, method='SLSQP', constraints=linea
 
 print("scipy optimizer solution:",res.x)
 
-
-
-# Todo: 1. add plotting for part3; 2. check with scipy optimize
