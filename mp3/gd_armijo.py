@@ -45,7 +45,7 @@ class GD_Armijo(object):
         dfx = np.matmul(self.Q.T + self.Q, x)
         dgx = np.matmul(self.lambda_k.T, self.A).T
         dgx_norm = np.matmul(self.A.T, self.h(x))
-        return dfx + dgx + self.c_k * dgx_norm
+        return dfx + dgx + self.c_k * 2 * dgx_norm
 
     # Armijo's rule for finding alpha given x_k and other parameters
     def armijo(self, x, alpha0, sigma, beta):
